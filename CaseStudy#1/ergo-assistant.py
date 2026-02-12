@@ -2,6 +2,7 @@
 Ergonomic Configuration Assistant Prototyp
 """
 from dataclasses import dataclass, field
+import profile
 
 @dataclass
 class UserProfile:
@@ -168,4 +169,52 @@ def evaluate(profile: UserProfile) -> None:
         
 # UI program flow
 def print_results(profile: UserProfile) -> None:
-   print("\n" + "=" * 50)
+    print("\n" + "=" * 50)
+    print("Ergonomic Configuration Summary")
+    print("=" * 50)
+    print(f"Hand size: {profile.hand_size}")
+    print(f"Grip style: {profile.grip_style}")
+    print(f"Session duration: {profile.session_duration} minutes")
+    print(f"Discomfort notes: {profile.discomfort_level.strip() or '(none given)'}")
+    print(f"Keyboard layout: {profile.keyboard_layout}")
+    print(f"Mouse weight: {profile.mouse_weight if profile.mouse_weight is not None else '(unknown)'} grams")
+    print(f"Space constraints: {profile.space_issue}")
+    print(f"Game type: {profile.game_type}")
+    print(f"\nRisk level: {profile.risk_level.upper()} (Points: {profile.risk_points})")
+    print("\nRecommendations:")
+    if not profile.recommendations:
+        print("- No specific recommendations. Your current setup appears to be low risk.")
+    else:
+        for rec in profile.recommendations:
+            print(f"- {rec}")
+    print("=" * 50 + "\n")
+    
+def main():
+    print("Welcome to the Ergonomic Configuration Assistant Prototype!")
+    print("Answer a few questions about your gaming setup and habits to receive personalized ergonomic recommendations.\n")
+    
+    hand_size = ask_choise("What is your hand size?", ["small", "medium", "large"])
+    grip_style = ask_choise("What is your primary mouse grip style?", ["fingertip", "claw", "palm"])
+    session_duration = ask_int("On average, how long are your gaming sessions in minutes?", min_val=1)
+    discomfort_level = input("Do you experience any discomfort while gaming? If so, please describe (e.g. 'wrist pain', 'finger discomfort', 'forearm ache', or 'none'): ").strip()
+    keyboard_layout = ask_choise("What keyboard layout do you use for gaming?", ["wasd", "esdf", "other"]).lower()
+    mouse_weight = ask_mouse_weight()
+    space_issue = ask_choise("Do you have space constraints at your gaming setup?", ["yes", "no"])
+    game_type = ask_choise("What type of games do you primarily play?", ["fps", "moba", "rpg", "mmorpg", "other"])
+    
+    profile = UserProfile(
+        hand_size=hand_size,
+        grip_style=grip_style,
+        session_duration=session_duration,
+        discomfort_level=discomfort_level,
+        keyboard_layout=keyboard_layout,
+        mouse_weight=mouse_weight,
+        space_issue=space_issue,
+        game_type=game_type
+    )
+    
+    evaluate(profile)
+    print_results(profile)
+    
+if __name__ == "__main__":
+    main()
