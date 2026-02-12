@@ -1,8 +1,15 @@
 """
-Ergonomic Configuration Assistant Prototyp
+Ergonomic Configuration Assistant Prototype
+
+Step 3 Requirements Demonstrated:
+- Input handling: prompts user for setup + discomfort info
+- Output/feedback: prints risk level + tailored recommendations
+- HCI connection:
+  - Guided questions reduce cognitive load vs. unstructured research
+  - Risk scoring encourages safer habits (health/safety)
+  - Supportive recommendations improve confidence (satisfaction)
 """
 from dataclasses import dataclass, field
-import profile
 
 @dataclass
 class UserProfile:
@@ -36,7 +43,7 @@ def ask_choise(prompt: str, choices: list[str]) -> str:
         print(f"Invalid choice. Please choose from: {', '.join(choices)}.")
         
         
-def ask_int(prompt: str, min_val: int = None, max_val: int = 10**9) -> int:
+def ask_int(prompt: str, min_val: int = 0, max_val: int = 10**9) -> int:
     """Promput user until they enter a valid integer within the specified range."""
     while True:
         raw = input(f"{prompt}: ").strip()
